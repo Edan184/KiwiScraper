@@ -1,18 +1,31 @@
-import requests, pymysql
+from email.quoprimime import quote
+import requests, psycopg2, json
 from bs4 import BeautifulSoup
 
-list_examp = ["Yogi Berra", "Thomas Edison"]
+quote_page = "https://type.fit/api/quotes"
 
 # gets data from typefit api
 def collect_quotes_data(quote_page):
+    quotes = requests.get(quote_page)
 
-    return
+    return quotes
 
-def parse_quote_data():
+def parse_quote_data(quotes):
+    payload = {}
+    quotes_dict = json.loads(quotes.text)
 
-    return
+    for i in quotes_dict:
+        if i["author"] not in payload.keys():
+            payload[i["author"]] = []
+            payload[i["author"]].append(i["text"])
+        else:
+            payload[i["author"]].append(i["text"])
 
-def create_img_data():
+    return payload
+
+def create_img_data(payload):
+    for i in payload:
+        result = requests.get("https://en.wikipedia.org/wiki/{}".format(i))
 
     return
 
@@ -22,13 +35,12 @@ def create_quote_data():
 
 # save all this data in database somehow
 def update_db(img_set, quote_set):
-    result = requests.get("https://en.wikipedia.org/wiki/{}".input(name))
-
+    return
 # function that takes an author 
 # makes a request to https://en.wikipedia.org/wiki/Carl_Sandburg
 # finds all image srcs using bs4 
 def db_query(name):
-
+    return
 
 # parses data that returns
 # hashmap key: author, value: array of quotes
@@ -42,3 +54,5 @@ def db_query(name):
 # call function 3 
 # save srcs 
 # hashmap (author -> list of image srcs)
+if __name__ == "__main__":
+    create_img_data(parse_quote_data(collect_quotes_data(quote_page)))
