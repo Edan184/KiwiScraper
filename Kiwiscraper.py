@@ -10,6 +10,8 @@ def collect_quotes_data(quote_page):
 
     return quotes
 
+# parses data that returns
+# hashmap key: author, value: array of quotes
 def parse_quote_data(quotes):
     payload = {}
     quotes_dict = json.loads(quotes.text)
@@ -23,6 +25,11 @@ def parse_quote_data(quotes):
 
     return payload
 
+# function that takes an author 
+# makes a request to https://en.wikipedia.org/wiki/Carl_Sandburg
+# finds all image srcs using bs4 
+# save srcs 
+# hashmap (author -> list of image srcs)
 def create_img_data(payload):
     for i in payload:
         result = requests.get("https://en.wikipedia.org/wiki/{}".format(i))
@@ -36,23 +43,9 @@ def create_quote_data():
 # save all this data in database somehow
 def update_db(img_set, quote_set):
     return
-# function that takes an author 
-# makes a request to https://en.wikipedia.org/wiki/Carl_Sandburg
-# finds all image srcs using bs4 
+
 def db_query(name):
     return
 
-# parses data that returns
-# hashmap key: author, value: array of quotes
-
-# function that takes an author
-# makes a request to https://en.wikipedia.org/wiki/Carl_Sandburg
-# finds all image srcs using bs4 
-
-# call functions 1 and 2
-# iterate of key *authors list from hashmap 
-# call function 3 
-# save srcs 
-# hashmap (author -> list of image srcs)
 if __name__ == "__main__":
     create_img_data(parse_quote_data(collect_quotes_data(quote_page)))
